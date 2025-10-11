@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SortMi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+      <div class="nav-container">
+          <a href="index.html" class="logo">SortMi</a>
+          <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <!-- Only show Visualizers on mobile view nav-->
+              <li class="mobile-only"><a href="algorithm.html">Visualizers</a></li>
+              <li class="mobile-only"><a href="aboutUs.html">About</a></li>
+              <li class="mobile-only"><a href="contact.html">Contact</a></li>
+          </ul>
+      </div>
+    </nav>
+
+    <br>
+
+    <div class="containerVisual">
+      <div class="canvasWrapper">
+        <h1 id="algorithmTitle">algorithmTitle</h1>
+        <p id="algorithmComplexity">algorithmComplexity</p>
+        <p id="algorithmDescription">algorithmDescription</p>
+        <canvas id="sortingCanvas"></canvas>
+
+        <!-- Buttons container to align them horizontally -->
+        <div id="buttons">
+            <button id="generateButton" onclick="generateArray()">Generate New Array</button>
+            <button onclick="startSorting(selectedAlgo)">Sort</button>
+        </div>
+        <!-- Horizontal slider -->
+        <div id="slider-container">
+            <h2>Array Size:</h2>
+            <input type="number" id="sizeValue" min="10" max="5000" step="10" value="100">
+            <input type="range" id="arraySize" min="10" max="5000" step="10" value="100">
+        </div>
+      </div>
+      <br>
+      <div id="codeContainer">
+        <h2 id="codeTitle">Code:</h2>
+        <!-- Preview -->
+        <pre id="exampleCode"></pre>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

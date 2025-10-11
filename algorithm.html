@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SortMi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">SortMi</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <!-- Only show Visualizers on mobile view nav-->
+                <li class="mobile-only"><a href="algorithm.html">Visualizers</a></li>
+                <li class="mobile-only"><a href="aboutUs.html">About</a></li>
+                <li class="mobile-only"><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+      </nav>
+
+    <!-- Algorithm Section -->
+    <section id="algorithm">
+        <h2 class="section-title">Choose an Algorithm:</h2>
+
+        <div class="sortContainer">
+            <h1>Bubble Sort</h1>
+            <p>O(n²)</p>
+            <button onclick="window.location.href='visualizer.html?algo=bubble'">Select</button>
+        </div>
+        
+        <div class="sortContainer">
+            <h1>Merge Sort</h1>
+            <p>O(n log n)</p>
+            <button onclick="window.location.href='visualizer.html?algo=merge'">Select</button>
+        </div>
+        
+        <div class="sortContainer">
+            <h1>Quick Sort</h1>
+            <p>O(n log n)</p>
+            <button onclick="window.location.href='visualizer.html?algo=quick'">Select</button>
+        </div>
+
+        <div class="sortContainer">
+            <h1>Bogo Sort</h1>
+            <p>O(∞)</p>
+            <button onclick="window.location.href='visualizer.html?algo=bogo'">Select</button>
+        </div>
+
+        <div class="sortContainer">
+            <h1>Insertion Sort</h1>
+            <p>O(n²)</p>
+            <button onclick="window.location.href='visualizer.html?algo=insertion'">Select</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>University 2025 SortMi Project.</p>
+    </footer>
+</body>
+</html>

@@ -73,7 +73,7 @@ def quick_sort(arr):
     bogo: {
         name: "Bogo Sort",
         complexity: "O(∞)",
-        description: "Bogo Sort shuffles the array until it is sorted.",
+        description: "Bogo Sort shuffles the array randomly until it happens to be sorted.",
         exCode: `
 import random
 
@@ -100,6 +100,133 @@ def insertion_sort(arr):
             j -= 1
         arr[j + 1] = key
 `
+    },
+    selection: {
+        name: "Selection Sort",
+        complexity: "O(n²)",
+        description: "Selection Sort repeatedly finds the minimum element and places it at the beginning.",
+        exCode: `
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+`
+    },
+    heap: {
+        name: "Heap Sort",
+        complexity: "O(n log n)",
+        description: "Heap Sort uses a binary heap data structure to efficiently sort elements.",
+        exCode: `
+def heap_sort(arr):
+    n = len(arr)
+    
+    # Build max heap
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+    
+    # Extract elements from heap
+    for i in range(n - 1, 0, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        heapify(arr, i, 0)
+
+def heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+    
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+    
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+`
+    },
+    shell: {
+        name: "Shell Sort",
+        complexity: "O(n log n)",
+        description: "Shell Sort is an optimized insertion sort that allows exchanges of far apart elements.",
+        exCode: `
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
+    
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+        gap //= 2
+`
+    },
+    cocktail: {
+        name: "Cocktail Shaker Sort",
+        complexity: "O(n²)",
+        description: "Cocktail Shaker Sort is a bidirectional bubble sort that traverses in both directions.",
+        exCode: `
+def cocktail_sort(arr):
+    n = len(arr)
+    swapped = True
+    start = 0
+    end = n - 1
+    
+    while swapped:
+        swapped = False
+        
+        # Forward pass
+        for i in range(start, end):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        
+        if not swapped:
+            break
+        
+        swapped = False
+        end -= 1
+        
+        # Backward pass
+        for i in range(end - 1, start - 1, -1):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        
+        start += 1
+`
+    },
+    comb: {
+        name: "Comb Sort",
+        complexity: "O(n²)",
+        description: "Comb Sort improves on bubble sort by using gap sequences to eliminate small values near the end.",
+        exCode: `
+def comb_sort(arr):
+    n = len(arr)
+    gap = n
+    shrink = 1.3
+    sorted = False
+    
+    while not sorted:
+        gap = int(gap / shrink)
+        if gap <= 1:
+            gap = 1
+            sorted = True
+        
+        i = 0
+        while i + gap < n:
+            if arr[i] > arr[i + gap]:
+                arr[i], arr[i + gap] = arr[i + gap], arr[i]
+                sorted = False
+            i += 1
+`
     }
 };
 
@@ -124,8 +251,23 @@ if (sortingAlgorithms[selectedAlgo]) {
 // Script for the sorting visualizer
 const canvas = document.getElementById("sortingCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth * 0.9;
-canvas.height = 500;
+
+// Set canvas dimensions based on container
+function setCanvasSize() {
+    const container = canvas.parentElement;
+    canvas.width = container.offsetWidth - 64; // Account for padding
+    canvas.height = 380;
+}
+
+// Initialize canvas size
+setCanvasSize();
+
+// Update canvas size on window resize
+window.addEventListener('resize', () => {
+    setCanvasSize();
+    drawArray();
+});
+
 let array = [];
 
 // Function to generate a new random array based on the size provided
@@ -274,6 +416,161 @@ async function insertionSort(arr) {
     drawArray();
 }
 
+// Selection Sort
+async function selectionSort(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+        let minIdx = i;
+        
+        for (let j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+            await sleep(5);
+            drawArray();
+        }
+        
+        if (minIdx !== i) {
+            [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+            await sleep(10);
+            drawArray();
+        }
+    }
+    drawArray();
+}
+
+// Heap Sort
+async function heapSort(arr) {
+    let n = arr.length;
+    
+    // Build max heap
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        await heapify(arr, n, i);
+    }
+    
+    // Extract elements from heap
+    for (let i = n - 1; i > 0; i--) {
+        [arr[0], arr[i]] = [arr[i], arr[0]];
+        await sleep(10);
+        drawArray();
+        await heapify(arr, i, 0);
+    }
+    drawArray();
+}
+
+async function heapify(arr, n, i) {
+    let largest = i;
+    let left = 2 * i + 1;
+    let right = 2 * i + 2;
+    
+    if (left < n && arr[left] > arr[largest]) {
+        largest = left;
+    }
+    
+    if (right < n && arr[right] > arr[largest]) {
+        largest = right;
+    }
+    
+    if (largest !== i) {
+        [arr[i], arr[largest]] = [arr[largest], arr[i]];
+        await sleep(5);
+        drawArray();
+        await heapify(arr, n, largest);
+    }
+}
+
+// Shell Sort
+async function shellSort(arr) {
+    let n = arr.length;
+    let gap = Math.floor(n / 2);
+    
+    while (gap > 0) {
+        for (let i = gap; i < n; i++) {
+            let temp = arr[i];
+            let j = i;
+            
+            while (j >= gap && arr[j - gap] > temp) {
+                arr[j] = arr[j - gap];
+                j -= gap;
+                await sleep(5);
+                drawArray();
+            }
+            arr[j] = temp;
+            await sleep(5);
+            drawArray();
+        }
+        gap = Math.floor(gap / 2);
+    }
+    drawArray();
+}
+
+// Cocktail Shaker Sort
+async function cocktailSort(arr) {
+    let n = arr.length;
+    let swapped = true;
+    let start = 0;
+    let end = n - 1;
+    
+    while (swapped) {
+        swapped = false;
+        
+        // Forward pass
+        for (let i = start; i < end; i++) {
+            if (arr[i] > arr[i + 1]) {
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                swapped = true;
+                await sleep(10);
+                drawArray();
+            }
+        }
+        
+        if (!swapped) break;
+        
+        swapped = false;
+        end--;
+        
+        // Backward pass
+        for (let i = end - 1; i >= start; i--) {
+            if (arr[i] > arr[i + 1]) {
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                swapped = true;
+                await sleep(10);
+                drawArray();
+            }
+        }
+        start++;
+    }
+    drawArray();
+}
+
+// Comb Sort
+async function combSort(arr) {
+    let n = arr.length;
+    let gap = n;
+    const shrink = 1.3;
+    let sorted = false;
+    
+    while (!sorted) {
+        gap = Math.floor(gap / shrink);
+        if (gap <= 1) {
+            gap = 1;
+            sorted = true;
+        }
+        
+        let i = 0;
+        while (i + gap < n) {
+            if (arr[i] > arr[i + gap]) {
+                [arr[i], arr[i + gap]] = [arr[i + gap], arr[i]];
+                sorted = false;
+                await sleep(5);
+                drawArray();
+            }
+            i++;
+        }
+    }
+    drawArray();
+}
+
 
 // Handling size slider/input events
 const sizeSlider = document.getElementById("arraySize");
@@ -336,6 +633,21 @@ function startSorting() {
             break;
         case "insertion":
             insertionSort(array).then(() => sortingInProgress = false);
+            break;
+        case "selection":
+            selectionSort(array).then(() => sortingInProgress = false);
+            break;
+        case "heap":
+            heapSort(array).then(() => sortingInProgress = false);
+            break;
+        case "shell":
+            shellSort(array).then(() => sortingInProgress = false);
+            break;
+        case "cocktail":
+            cocktailSort(array).then(() => sortingInProgress = false);
+            break;
+        case "comb":
+            combSort(array).then(() => sortingInProgress = false);
             break;
         default:
             console.error("Invalid algorithm selected!");
